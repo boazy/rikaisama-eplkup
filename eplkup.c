@@ -18,8 +18,7 @@
 --
 ------------------------------------------------------------------------*/
 
-
-#include <wtypes.h>
+//#include <wtypes.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -41,8 +40,13 @@ static void print_title_to_out_file(void);
 static void lookup_link(void);
 static void lookup_word(void);
 static void die(int exit_code);
-static void parse_command_line(void);
 static void usage(int exit_code, char *msg);
+
+#ifdef _WIN32
+static void parse_command_line(void);
+#else
+static void parse_command_line(int argc, char* argv[]);
+#endif
 
 
 /* Hooks - Used to process certain constructs as they come up (such as gaiji) */
@@ -92,10 +96,18 @@ static EB_Book book; /* The EPWING book object */
 -- Name: WinMain
 --
 ------------------------------------------------------------------------*/
+#ifdef _WIN32
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+#else
+int main(int argc, char* argv[])
+#endif
 {
   /* Parse the command line arguments */
+#ifdef _WIN32
   parse_command_line();
+#else
+  parse_command_line(argc, argv);
+#endif
 
   /* Initialize */
   init();
@@ -118,6 +130,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
   die(0);
 
+  return 0;
 } /* WinMain */
 
 
@@ -311,7 +324,7 @@ static void lookup_link(void)
   FILE *out_file = NULL;
   char link_text[MAXLEN_LOOKUP_WORD] = "";
   char *status_conv = NULL;
-  int text_length;
+  ssize_t text_length;
   int parse_result;
 
   in_file = fopen(in_path, "r");
@@ -402,8 +415,8 @@ static void lookup_word(void)
   FILE *in_file = NULL;
   FILE *out_file = NULL;
   int hit_count;
-  int heading_length;
-  int text_length;
+  ssize_t heading_length;
+  ssize_t text_length;
   int i;
 
   /* Get the word to lookup */
@@ -628,15 +641,22 @@ static void die(int exit_code)
 --   None.
 --
 ------------------------------------------------------------------------*/
-void parse_command_line(void)
+#ifdef _WIN32
+void parse_command_line()
+#else
+void parse_command_line(int argc, char* argv[])
+#endif
 {
   int i;
-  FILE *fp = NULL;
+#ifdef _WIN32
   int argc = 0;
   LPWSTR *argv;
   char cur_arg[MAXLEN_ARG + 1] = "";
-  char *status_conv = NULL;
   argv = CommandLineToArgvW(GetCommandLineW(), &argc);
+#else
+  char* cur_arg = NULL;
+#define wcstombs(varname, src, dummy) varname = src;
+#endif
 
   if(argv == NULL)
   {

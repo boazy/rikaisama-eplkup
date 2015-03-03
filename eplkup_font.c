@@ -107,7 +107,7 @@ char *encode_character_base64(EB_Book *book, int save_format, int character_widt
   if(error_code == EB_SUCCESS)
   {
     /* Encode the image as base64 text */
-    return encode_base64(image_size, image_data);
+    return encode_base64(image_size, (unsigned char*)image_data);
   }
   else
   {

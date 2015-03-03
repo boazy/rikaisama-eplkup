@@ -21,11 +21,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <errno.h>
 
 #include "string.h"
 #include "iconv.h"
 #include "eplkup_utils.h"
-
 
 /*------------------------------------------------------------------------
 -- Name: is_hex
@@ -159,7 +159,7 @@ char *convert_encoding(char *dest, int max_dest, char *src, int max_src, const c
     return NULL;
   }
 
-  status_conv = iconv(cd, (const char **)&src, &in_left, &out_buf, &out_left);
+  status_conv = iconv(cd, &src, &in_left, &out_buf, &out_left);
 
   if(status_conv == (size_t)-1)
   {

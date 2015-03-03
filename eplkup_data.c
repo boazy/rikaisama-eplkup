@@ -20,6 +20,6 @@
 
 #include "eplkup_data.h"
 
-extern char subbook_directory[EB_MAX_DIRECTORY_NAME_LENGTH + 1] = "";
-extern int gaiji_option = 0;
+char subbook_directory[EB_MAX_DIRECTORY_NAME_LENGTH + 1] = "";
+int gaiji_option = 0;
 
