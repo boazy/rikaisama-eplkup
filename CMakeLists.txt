@@ -30,3 +30,4 @@ set(SOURCE_FILES
 
 add_executable(eplkup ${SOURCE_FILES})
 target_link_libraries(eplkup eb iconv)
+install (TARGETS eplkup DESTINATION bin)
