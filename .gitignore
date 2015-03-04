@@ -3,6 +3,13 @@
 ### Output directory ###
 out/
 
+### CMake ###
+CMakeCache.txt
+CMakeFiles
+Makefile
+cmake_install.cmake
+install_manifest.txt
+
 ### C ###
 # Object files
 *.o
