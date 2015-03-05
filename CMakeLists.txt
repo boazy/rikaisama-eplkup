@@ -28,6 +28,15 @@ set(SOURCE_FILES
   gaiji_table_snmkg99.c
   gaiji_table_wadai5.c)
 
+option(BUILD_STATIC "build a static executable" OFF)
+if (BUILD_STATIC)
+  add_library(eb STATIC IMPORTED)
+  set_target_properties(eb PROPERTIES IMPORTED_LOCATION /usr/local/lib/libeb.a)
+  set(EXTRA_LIBS "z")
+else(BUILD_STATIC)
+  set(EXTRA_LIBS "")
+endif(BUILD_STATIC)
+
 add_executable(eplkup ${SOURCE_FILES})
-target_link_libraries(eplkup eb iconv)
+target_link_libraries(eplkup eb iconv ${EXTRA_LIBS})
 install (TARGETS eplkup DESTINATION bin)
