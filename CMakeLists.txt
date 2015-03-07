@@ -41,10 +41,11 @@ if (BUILD_STATIC)
   endif(APPLE)
 endif(BUILD_STATIC)
 
+add_executable(eplkup ${SOURCE_FILES})
+
 if (APPLE)
-  target_link_libraries(eb iconv)
+  target_link_libraries(eplkup eb iconv)
 endif(APPLE)
 
-add_executable(eplkup ${SOURCE_FILES})
 target_link_libraries(eplkup eb z)
 install (TARGETS eplkup DESTINATION bin)
